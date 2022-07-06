@@ -138,7 +138,7 @@ def nsgaii_parameters(
     print("NSGA-II")
     #print(algorithm.get_observable_data())
     #algorithm.store_annotation_file("../../../annotation_files")
-    #print(algorithm.virtuoso_upload(algorithm.get_annotation()))
+    #print(algorithm.virtuoso_upload())
     #print(algorithm.termination.__triples__.serialize(format='nt', encoding="utf-8", destination="../../../annotation_files/prueba.nt"))
     front = algorithm.get_result()
     sol = front[1]

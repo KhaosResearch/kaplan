@@ -93,8 +93,9 @@ class EvolutionaryAlgorithm(Algorithm, ABC):
         store_path = Path(path, self.get_name() + ".nt")
         graph.serialize(format='nt', encoding="utf-8", destination=store_path)
 
-    def virtuoso_upload(self, graph: Graph):
+    def virtuoso_upload(self):
         try:
+            graph = self.get_annotation()
             workflow_nt = graph.serialize(format='nt', encoding="utf-8")
             triples = str(workflow_nt.decode("UTF-8"))
             RDF_REPOSITORY_ENDPOINT = settings.RDF_REPOSITORY_ENDPOINT
