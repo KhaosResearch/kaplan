@@ -7,7 +7,7 @@
 node_modules/
 dist/
 build/
-kaplanpy.egg-info/
+kapylan.egg-info/
 
 # Compiled Java class files
 *.class
