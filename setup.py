@@ -30,16 +30,16 @@ extras_require['complete'] = {v for req in extras_require.values() for v in req}
 
 setup(
     name='kaplanpy',
-    version='0.0.5',
+    version='0.0.8',
     description='Python version of the jMetal framework',
     long_description=README,
     long_description_content_type='text/markdown',
-    author='Antonio J. Nebro',
-    author_email='antonio@lcc.uma.es',
-    maintainer='Antonio J. Nebro, Antonio Benitez-Hidalgo',
-    maintainer_email='antonio@lcc.uma.es, antonio.benitez@lcc.uma.es',
+    author='Irene Sánchez Jiménez',
+    author_email='iresanjim@uma.es',
+    maintainer='Irene Sánchez Jiménez',
+    maintainer_email='iresanjim@uma.es',
     license='MIT',
-    url='https://github.com/jMetal/jMetalPy',
+    url='https://github.com/IreneSanx/kaplan',
     packages=find_packages(exclude=['test_']),
     classifiers=[
         'Development Status :: 3 - Alpha',
