@@ -1,3 +1,23 @@
+Metadata-Version: 2.1
+Name: kapylan
+Version: 0.0.1
+Summary: Python version of the jMetal framework
+Home-page: https://github.com/IreneSanx/kaplan
+Author: Irene Sánchez Jiménez
+Author-email: iresanjim@uma.es
+Maintainer: Irene Sánchez Jiménez
+Maintainer-email: iresanjim@uma.es
+License: MIT
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
+Classifier: Programming Language :: Python :: 3.6
+Description-Content-Type: text/markdown
+Provides-Extra: core
+Provides-Extra: complete
+License-File: LICENSE
+
 # kapylan
 
 <a href="https://github.com/KhaosResearch/kapylan"><img alt="Version: 0.5.5" src="https://img.shields.io/badge/version-1.0-success?color=0080FF&style=flat-square"></a> <a href="https://github.com/IreneSanx/kaplan"><img alt="Code style: black" src="https://img.shields.io/badge/code%20style-black-000000.svg?style=flat-square"></a>

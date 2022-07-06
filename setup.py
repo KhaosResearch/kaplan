@@ -8,7 +8,6 @@ with open(join(basedir, 'README.md'), encoding='utf-8') as f:
     README = f.read()
 
 install_requires = [
-    'tqdm',
     'numpy>=1.16.0',
     'pandas>=0.24.2',
     'plotly>=3.3.0',
@@ -22,15 +21,13 @@ install_requires = [
     'stringcase>=1.2.0'
 ]
 extras_require = {
-    'core': install_requires,
-    'docs': install_requires + ['jupyter', 'nbsphinx'],
-    'distributed': install_requires + ['dask[complete]>=1.2.2', 'distributed>=1.28.1', 'pyspark>=2.4.0']
+    'core': install_requires
 }
 extras_require['complete'] = {v for req in extras_require.values() for v in req}
 
 setup(
-    name='kaplanpy',
-    version='0.0.8',
+    name='kapylan',
+    version='0.0.1',
     description='Python version of the jMetal framework',
     long_description=README,
     long_description_content_type='text/markdown',
