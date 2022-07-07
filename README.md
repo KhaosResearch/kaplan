@@ -9,9 +9,7 @@
 #### Installation
 
 ```
-git clone https://github.com/KhaosResearch/kapylan.git
-cd kapylan
-python3 setup.py install
+pip install kapylan
 ```
 
 ### ✨ Getting started
