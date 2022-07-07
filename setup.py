@@ -27,7 +27,7 @@ extras_require['complete'] = {v for req in extras_require.values() for v in req}
 
 setup(
     name='kapylan',
-    version='0.0.1',
+    version='0.0.2',
     description='Python version of the jMetal framework',
     long_description=README,
     long_description_content_type='text/markdown',
