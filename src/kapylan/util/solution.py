@@ -40,7 +40,7 @@ def read_solutions(filename: str) -> list:
     return front
 
 
-def print_variables_to_file(solutions, filename: str):
+def print_variables_to_file(solutions: list, filename: str):
     LOGGER.info('Output file (variables): ' + filename)
 
     try:
@@ -66,7 +66,7 @@ def print_variables_to_screen(solutions):
         print(solution.variables[0])
 
 
-def print_function_values_to_file(solutions, filename: str):
+def print_function_values_to_file(solutions: list, filename: str):
     LOGGER.info('Output file (function values): ' + filename)
 
     try:
@@ -83,7 +83,7 @@ def print_function_values_to_file(solutions, filename: str):
                 of.write(str(function_value) + ' ')
             of.write('\n')
 
-def print_function_values_to_screen(solutions):
+def print_function_values_to_screen(solutions: list):
     if type(solutions) is not list:
         solutions = [solutions]
 
@@ -93,7 +93,7 @@ def print_function_values_to_screen(solutions):
         print()
 
 
-def restore_objs(front, problem: MSA):
+def restore_objs(front: list, problem: MSA):
     for solution in front:
         for i in range(problem.number_of_objectives):
             if not problem.score_list[i].is_minimization():
@@ -101,7 +101,7 @@ def restore_objs(front, problem: MSA):
 
     return front
 
-def get_representative_set(front):
+def get_representative_set(front: list):
     """ Returns three solutions from any given front: one from the middle (by sorting the front in regard to the first
     objective) and one from each extreme region.
     """
