@@ -12,6 +12,9 @@ BIGOWL = ontology(uri="http://www.ontologies.khaos.uma.es/bigowl/")
 RDF = ontology(uri="http://www.w3.org/1999/02/22-rdf-syntax-ns#")
 
 def merge_component(algorithm, predict: Dict[str, str], object: Dict[str, str]):
+    """
+    Custom decorator that adds extra annotation to an annotation already made with the annotated_component function.
+    """
     v = (predict or dict()).copy()
     v.update(algorithm.args[1])
     d = (object or dict()).copy()
@@ -47,6 +50,9 @@ def component(uri, predict: Dict[str, str] = None, object: Dict[str, str] = None
     return partial(annotated_component, uri, predict or dict(), object or dict())
 
 def parameter(uri):
+    """
+    Generates the annotation of each parameter of a component.
+    """
     g = Graph()
     if "number" in uri or "size" in uri:
         g.add((uri, BIGOWL.namespace.hasDataType, BIGOWL.namespace.Integer))
