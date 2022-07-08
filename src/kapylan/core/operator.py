@@ -46,13 +46,3 @@ class Crossover(Operator, ABC):
     @abstractmethod
     def get_number_of_children(self) -> int:
         pass
-
-
-class Selection(Operator, ABC):
-    """ Class representing selection operator. """
-
-    def __init__(self):
-        pass
-
-    def get_comparator(self):
-        pass

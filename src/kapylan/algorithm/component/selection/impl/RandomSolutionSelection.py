@@ -3,8 +3,8 @@ import random
 import rdflib
 from rdflib import XSD
 
-from kapylan.annotation.ontology import ontology
 from kapylan.algorithm.component.selection.selection import Selection
+from kapylan.annotation.ontology import ontology
 from kapylan.annotation.component_annotation import SelectionComponent
 
 TITAN = ontology(uri="http://www.ontologies.khaos.uma.es/titan-kaplan/")
@@ -22,7 +22,6 @@ class RandomSolutionSelection(Selection):
         elif len(front) == 0:
             raise Exception('The front is empty')
         matingPool = []
-        print(self.mating_pool_size)
         for i in range(self.mating_pool_size):
             matingPool.append(random.choice(front))
         return matingPool
