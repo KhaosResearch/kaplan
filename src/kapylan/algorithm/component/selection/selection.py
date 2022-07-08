@@ -11,8 +11,3 @@ class Selection(ABC):
     @abstractmethod
     def select(self, source):
         pass
-
-    @abstractmethod
-    def get_comparator(self):
-        pass
-
