@@ -1,6 +1,4 @@
 from pathlib import Path
-import platform
-import tempfile
 from kapylan.algorithm.operator.mutation import PolynomialMutation, BitFlipMutation
 from kapylan.util.comparator import DominanceComparator
 from kapylan.algorithm.component.evaluation.impl.SequentialEvaluation import SequentialEvaluation
@@ -44,11 +42,6 @@ store = _Store()
 
 
 class _Settings(BaseSettings):
-    
-    #RDF_REPOSITORY_ENDPOINT = "<Removed by BFG>"
-    #RDF_REPOSITORY_USERNAME = "<Removed by BFG>"
-    #RDF_REPOSITORY_PASSWORD = "<Removed by BFG>"
-    #RDF_REPOSITORY_DB = "<Removed by BFG>"
 
     RDF_REPOSITORY_ENDPOINT = "<Removed by BFG>"
     RDF_REPOSITORY_USERNAME = "<Removed by BFG>in"
