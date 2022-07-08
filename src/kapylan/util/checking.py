@@ -16,14 +16,21 @@ class EmptyCollectionException(RuntimeError):
 class InvalidProbabilityValueException(RuntimeError):
     def __init__(self, value: float):
         super(InvalidProbabilityValueException, self).__init__(
-            "The parameter " + str(value) + " is not a valid probability value")
+            "The parameter " + str(value) + " is not a valid probability value"
+        )
 
 
 class ValueOutOfRangeException(RuntimeError):
     def __init__(self, value: float, lowest_value: float, highest_value: float):
         super(ValueOutOfRangeException, self).__init__(
-            "The parameter " + str(value) + " is not in the range (" + str(lowest_value) + ", " + str(
-                highest_value) + ")")
+            "The parameter "
+            + str(value)
+            + " is not in the range ("
+            + str(lowest_value)
+            + ", "
+            + str(highest_value)
+            + ")"
+        )
 
 
 class Check:
@@ -51,4 +58,3 @@ class Check:
     def that(expression: bool, message: str):
         if not expression:
             raise InvalidConditionException(message)
-

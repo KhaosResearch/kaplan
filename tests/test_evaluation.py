@@ -1,7 +1,10 @@
 import unittest
-from kapylan.algorithm.component.evaluation.impl.SequentialEvaluation import SequentialEvaluation
+from kapylan.algorithm.component.evaluation.impl.SequentialEvaluation import (
+    SequentialEvaluation,
+)
 from kapylan.core.problem import FloatProblem
 from kapylan.core.solution import FloatSolution
+
 
 class MockedProblem(FloatProblem):
     def __init__(self, number_of_variables: int = 3):
@@ -50,6 +53,7 @@ class SequentialEvaluationTestCases(unittest.TestCase):
         for i in range(10):
             self.assertEqual(1.2, problem_list[i].objectives[0])
             self.assertEqual(2.3, problem_list[i].objectives[1])
+
 
 if __name__ == "__main__":
     unittest.main()

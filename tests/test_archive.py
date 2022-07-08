@@ -18,6 +18,7 @@ class ArchiveTestCases(unittest.TestCase):
     def test_should_constructor_create_an_empty_list(self):
         self.assertEqual(0, len(self.archive.solution_list))
 
+
 class NonDominatedSolutionListArchiveTestCases(unittest.TestCase):
     def setUp(self):
         self.archive = NonDominatedSolutionsArchive()
@@ -55,9 +56,14 @@ class NonDominatedSolutionListArchiveTestCases(unittest.TestCase):
         self.archive.add(solution2)
 
         self.assertEqual(2, self.archive.size())
-        self.assertTrue(solution1 in self.archive.solution_list and solution2 in self.archive.solution_list)
+        self.assertTrue(
+            solution1 in self.archive.solution_list
+            and solution2 in self.archive.solution_list
+        )
 
-    def test_should_adding_four_solutions_work_properly_if_one_dominates_the_others(self):
+    def test_should_adding_four_solutions_work_properly_if_one_dominates_the_others(
+        self,
+    ):
         solution1 = Solution(1, 2)
         solution1.objectives = [1.0, 1.0]
 
@@ -94,7 +100,11 @@ class NonDominatedSolutionListArchiveTestCases(unittest.TestCase):
 
         self.assertEqual(2, self.archive.size())
         self.assertFalse(result)
-        self.assertTrue(solution1 in self.archive.solution_list or solution3 in self.archive.solution_list)
+        self.assertTrue(
+            solution1 in self.archive.solution_list
+            or solution3 in self.archive.solution_list
+        )
+
 
 if __name__ == "__main__":
     unittest.main()

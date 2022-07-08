@@ -2,34 +2,46 @@ import unittest
 from mockito import mock, never, verify, when
 from kapylan.core.solution import Solution
 
-from kapylan.util.comparator import Comparator, MultiComparator, SolutionAttributeComparator
+from kapylan.util.comparator import (
+    Comparator,
+    MultiComparator,
+    SolutionAttributeComparator,
+)
 
 
 class SolutionAttributeComparatorTestCases(unittest.TestCase):
     def setUp(self):
         self.comparator = SolutionAttributeComparator("attribute")
 
-    def test_should_compare_return_zero_if_the_first_solution_has_no_the_attribute(self):
+    def test_should_compare_return_zero_if_the_first_solution_has_no_the_attribute(
+        self,
+    ):
         solution1 = Solution(1, 1)
         solution2 = Solution(1, 1)
         solution2.attributes["attribute"] = 1.0
 
         self.assertEqual(0, self.comparator.compare(solution1, solution2))
 
-    def test_should_compare_return_zero_if_the_second_solution_has_no_the_attribute(self):
+    def test_should_compare_return_zero_if_the_second_solution_has_no_the_attribute(
+        self,
+    ):
         solution1 = Solution(1, 1)
         solution2 = Solution(1, 1)
         solution1.attributes["attribute"] = 1.0
 
         self.assertEqual(0, self.comparator.compare(solution1, solution2))
 
-    def test_should_compare_return_zero_if_none_of_the_solutions_have_the_attribute(self):
+    def test_should_compare_return_zero_if_none_of_the_solutions_have_the_attribute(
+        self,
+    ):
         solution1 = Solution(1, 1)
         solution2 = Solution(1, 1)
 
         self.assertEqual(0, self.comparator.compare(solution1, solution2))
 
-    def test_should_compare_return_zero_if_both_solutions_have_the_same_attribute_value(self):
+    def test_should_compare_return_zero_if_both_solutions_have_the_same_attribute_value(
+        self,
+    ):
         solution1 = Solution(1, 1)
         solution2 = Solution(1, 1)
         solution1.attributes["attribute"] = 1.0
@@ -74,6 +86,7 @@ class SolutionAttributeComparatorTestCases(unittest.TestCase):
 
         comparator = SolutionAttributeComparator("attribute", False)
         self.assertEqual(-1, comparator.compare(solution1, solution2))
+
 
 class MultiComparatorTestCases(unittest.TestCase):
     def test_should_compare_return_zero_if_the_comparator_list_is_empty(self):

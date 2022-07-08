@@ -5,20 +5,36 @@ from os import listdir
 from typing import List
 
 from kapylan.algorithm.operator.crossover.SPXMSACrossover import SPXMSACrossover
-from kapylan.algorithm.operator.mutation.TwoRandomAdjacentGapGroupMutation import TwoRandomAdjacentGapGroupMutation
+from kapylan.algorithm.operator.mutation.TwoRandomAdjacentGapGroupMutation import (
+    TwoRandomAdjacentGapGroupMutation,
+)
 from kapylan.core.solution import MSASolution
 from kapylan.problem.msa import MSA
 from kapylan.problem.msa_problem.fasta import read_fasta_file_as_list_of_pairs
 from kapylan.problem.msa_problem.score import Score
 
-LOGGER = logging.getLogger('Sequoya')
+LOGGER = logging.getLogger("Sequoya")
 
 
 class BAliBASE(MSA):
-    DATA_FILES = ['tfa_clu', 'tfa_muscle', 'tfa_kalign', 'tfa_retalign', 'fasta_aln', 'tfa_probcons', 'tfa_mafft',
-                  'tfa_fsa']
+    DATA_FILES = [
+        "tfa_clu",
+        "tfa_muscle",
+        "tfa_kalign",
+        "tfa_retalign",
+        "fasta_aln",
+        "tfa_probcons",
+        "tfa_mafft",
+        "tfa_fsa",
+    ]
 
-    def __init__(self, instance: str, path: str, score_list: List[Score], auto_import: bool = True) -> None:
+    def __init__(
+        self,
+        instance: str,
+        path: str,
+        score_list: List[Score],
+        auto_import: bool = True,
+    ) -> None:
         """
         Creates a new problem based on an instance of BAliBASE.
         :param instance: Instance name (e.g., BB12010).
@@ -49,44 +65,48 @@ class BAliBASE(MSA):
         return offspring[0]
 
     def import_instance(self) -> List[MSASolution]:
-        bb3_release_path = self._compute_path('bb3_release')
-        assert os.path.isdir(bb3_release_path), 'Instance not found'
+        bb3_release_path = self._compute_path("bb3_release")
+        assert os.path.isdir(bb3_release_path), "Instance not found"
 
-        msa = read_fasta_file_as_list_of_pairs(f'{bb3_release_path}/{self.instance}.tfa')
+        msa = read_fasta_file_as_list_of_pairs(
+            f"{bb3_release_path}/{self.instance}.tfa"
+        )
         self.identifiers = list(pair[0] for pair in msa)
         self.number_of_variables = len(self.identifiers)
 
-        bb3_aligned_path = self._compute_path('bb3_aligned')
-        assert os.path.isdir(bb3_aligned_path), 'Instance not found'
+        bb3_aligned_path = self._compute_path("bb3_aligned")
+        assert os.path.isdir(bb3_aligned_path), "Instance not found"
 
         multiple_alignments = []
         for file in listdir(bb3_aligned_path):
-            name, fmt = file.split('.')
+            name, fmt = file.split(".")
 
             if name == self.instance and fmt in self.DATA_FILES:
-                msa = read_fasta_file_as_list_of_pairs(f'{bb3_aligned_path}/{file}')
+                msa = read_fasta_file_as_list_of_pairs(f"{bb3_aligned_path}/{file}")
                 multiple_alignments.append(msa)
 
         if len(multiple_alignments) < 2:
-            raise Exception('More than one pre-computed MSA is required')
+            raise Exception("More than one pre-computed MSA is required")
 
         population = []
         for msa in multiple_alignments:
             new_individual = MSASolution(self, msa)
             population.append(new_individual)
 
-        LOGGER.info('Instance imported')
+        LOGGER.info("Instance imported")
 
         for index, individual in enumerate(population):
             self.evaluate(individual)
-            LOGGER.info(f'ALN {index}, LEN: {individual.get_length_of_alignment()}, OBJ: {individual.objectives}')
+            LOGGER.info(
+                f"ALN {index}, LEN: {individual.get_length_of_alignment()}, OBJ: {individual.objectives}"
+            )
 
         self.sequences = population
 
         return population
 
     def _compute_path(self, directory: str) -> str:
-        return os.path.join(self.path, directory, 'RV' + self.instance[2:4] + '/')
+        return os.path.join(self.path, directory, "RV" + self.instance[2:4] + "/")
 
     def get_name(self) -> str:
-        return 'BAliBASE v3.0'
+        return "BAliBASE v3.0"

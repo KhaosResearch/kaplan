@@ -1,9 +1,10 @@
 from abc import ABC, abstractmethod
 from kapylan.annotation.component_annotation import SelectionComponent
 
+
 @SelectionComponent()
 class Selection(ABC):
-    """ Class representing selection component. """
+    """Class representing selection component."""
 
     def __init__(self):
         pass

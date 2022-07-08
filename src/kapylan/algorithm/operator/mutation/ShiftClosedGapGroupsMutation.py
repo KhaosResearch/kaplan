@@ -12,13 +12,16 @@ from kapylan.core.solution import MSASolution
 BIGOWL = ontology(uri="http://www.ontologies.khaos.uma.es/bigowl/")
 TITAN = ontology(uri="http://www.ontologies.khaos.uma.es/titan-kaplan/")
 
-ShiftClosedGapGroupsMutationComponent = merge_component(MutationComponent, {"hasParameterDistribution": BIGOWL.namespace.hasParameter},
-                              {"hasParameterDistribution": TITAN.namespace.parameter_mutation_remove_gap_columns})
+ShiftClosedGapGroupsMutationComponent = merge_component(
+    MutationComponent,
+    {"hasParameterDistribution": BIGOWL.namespace.hasParameter},
+    {"hasParameterDistribution": TITAN.namespace.parameter_mutation_remove_gap_columns},
+)
 
-#@ShiftClosedGapGroupsMutationComponent(hasImplementation=TITAN.namespace.ImplementationShiftClosedGapGroupsMutation, label=rdflib.Literal('Shift Closed Gap Groups Mutation', datatype=XSD.string),
+# @ShiftClosedGapGroupsMutationComponent(hasImplementation=TITAN.namespace.ImplementationShiftClosedGapGroupsMutation, label=rdflib.Literal('Shift Closed Gap Groups Mutation', datatype=XSD.string),
 #                                       hasSolution=BIGOWL.namespace.MSASolution)
 class ShiftClosedGapGroupsMutation(Mutation):
-    """ For every sequence, selects a random group and shift it with the closest gap group. """
+    """For every sequence, selects a random group and shift it with the closest gap group."""
 
     def __init__(self, probability: float, remove_gap_columns: bool = True) -> None:
         super(ShiftClosedGapGroupsMutation, self).__init__(probability=probability)
@@ -40,8 +43,13 @@ class ShiftClosedGapGroupsMutation(Mutation):
                     right_is_closest = False
 
                     if not right_is_closest:
-                        diff = (gaps_group[random_gaps_group + 3] - gaps_group[random_gaps_group + 2]) - \
-                               (gaps_group[random_gaps_group + 1] - gaps_group[random_gaps_group])
+                        diff = (
+                            gaps_group[random_gaps_group + 3]
+                            - gaps_group[random_gaps_group + 2]
+                        ) - (
+                            gaps_group[random_gaps_group + 1]
+                            - gaps_group[random_gaps_group]
+                        )
 
                         if diff < 0:
                             # diff < 0 means that gaps group 2 is shorter than gaps group 1, thus we need to decrease
@@ -71,9 +79,12 @@ class ShiftClosedGapGroupsMutation(Mutation):
             # Sanity check: alignment is valid (same length for all sequences)
             if not solution.is_valid_msa():
                 raise Exception(
-                    "Mutated solution is not valid! {0}".format(solution.decode_alignment_as_list_of_pairs()))
+                    "Mutated solution is not valid! {0}".format(
+                        solution.decode_alignment_as_list_of_pairs()
+                    )
+                )
 
         return solution
 
     def get_name(self) -> str:
-        return 'Shift closed gap group'
+        return "Shift closed gap group"

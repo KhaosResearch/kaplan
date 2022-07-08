@@ -17,7 +17,9 @@ class HyperVolumeTestCases(unittest.TestCase):
 
         self.assertEqual(5.0, value)
 
-    def test_should_hypervolume_return_the_correct_value_when_applied_to_the_ZDT1_reference_front(self):
+    def test_should_hypervolume_return_the_correct_value_when_applied_to_the_ZDT1_reference_front(
+        self,
+    ):
         filepath = Path("resources/reference_front/", "ZDT1.pf")
         front = []
 

@@ -5,7 +5,7 @@ from kapylan.annotation.component_annotation import SolutionCreationComponent
 
 @SolutionCreationComponent()
 class SolutionCreation(ABC):
-    """ Class representing solution creation component. """
+    """Class representing solution creation component."""
 
     def __init__(self):
         pass

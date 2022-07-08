@@ -6,7 +6,6 @@ from kapylan.problem.msa_problem.score import Score
 
 
 class MSA(MSAProblem):
-
     def __init__(self, score_list: List[Score]) -> None:
         """
         Creates a new MSA problem.
@@ -35,4 +34,4 @@ class MSA(MSAProblem):
         return solution
 
     def get_name(self) -> str:
-        return 'Multiple Sequence Alignment problem'
+        return "Multiple Sequence Alignment problem"

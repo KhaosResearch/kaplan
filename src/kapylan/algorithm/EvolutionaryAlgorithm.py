@@ -8,7 +8,9 @@ from kapylan.algorithm.component.replacement.replacement import Replacement
 from kapylan.algorithm.component.variation.variation import Variation
 from kapylan.algorithm.component.evaluation.evaluation import Evaluation
 from kapylan.algorithm.component.selection.selection import Selection
-from kapylan.algorithm.component.solution_creation.solution_creation import SolutionCreation
+from kapylan.algorithm.component.solution_creation.solution_creation import (
+    SolutionCreation,
+)
 from kapylan.algorithm.component.termination.termination import Termination
 from kapylan.algorithm.algorithm import Algorithm
 from kapylan.annotation.component_annotation import EvolutionaryAlgorithmComponent
@@ -16,18 +18,19 @@ from kapylan.annotation.repository import Virtuoso
 from kapylan.config import store, settings
 
 
-#@EvolutionaryAlgorithmComponent()
+# @EvolutionaryAlgorithmComponent()
 class EvolutionaryAlgorithm(Algorithm, ABC):
+    def __init__(
+        self,
+        name: str,
+        solution_creation: SolutionCreation,
+        selection: Selection,
+        variation: Variation,
+        replacement_policy: Replacement,
+        population_evaluation: Evaluation,
+        termination: Termination = store.default_termination_criteria,
+    ):
 
-    def __init__(self,
-                name: str,
-                solution_creation: SolutionCreation,
-                selection: Selection,
-                variation: Variation,
-                replacement_policy: Replacement,
-                population_evaluation: Evaluation,
-                termination: Termination = store.default_termination_criteria):
-                
         super(EvolutionaryAlgorithm, self).__init__()
 
         self.name = name
@@ -39,7 +42,7 @@ class EvolutionaryAlgorithm(Algorithm, ABC):
         self.replacement_policy = replacement_policy
 
     def run(self):
-        """ Execute the algorithm. """
+        """Execute the algorithm."""
         self.start_computing_time = time.time()
 
         self.solutions = self.solution_creation.create()
@@ -50,18 +53,23 @@ class EvolutionaryAlgorithm(Algorithm, ABC):
         while not self.termination.is_met:
             mating_population = self.selection.select(self.solutions)
             offspring_population = self.variation.variate(mating_population)
-            offspring_population = self.population_evaluation.evaluate(offspring_population)
+            offspring_population = self.population_evaluation.evaluate(
+                offspring_population
+            )
 
-            self.solutions = self.replacement_policy.replace(self.solutions, offspring_population)
+            self.solutions = self.replacement_policy.replace(
+                self.solutions, offspring_population
+            )
             self.update_progress()
 
         self.total_computing_time = time.time() - self.start_computing_time
 
-
     def get_observable_data(self) -> dict:
-        return {'EVALUATIONS': self.evaluations,
-                'SOLUTIONS': self.get_result(),
-                'COMPUTING_TIME': time.time() - self.start_computing_time}
+        return {
+            "EVALUATIONS": self.evaluations,
+            "SOLUTIONS": self.get_result(),
+            "COMPUTING_TIME": time.time() - self.start_computing_time,
+        }
 
     def init_progress(self) -> None:
         self.evaluations = len(self.solutions)
@@ -85,24 +93,36 @@ class EvolutionaryAlgorithm(Algorithm, ABC):
         g_replacement = self.replacement_policy.__triples__
         g_solution_creation = self.solution_creation.__triples__
 
-        g += g_selection + g_evaluation + g_termination + g_variation + g_replacement + g_solution_creation
+        g += (
+            g_selection
+            + g_evaluation
+            + g_termination
+            + g_variation
+            + g_replacement
+            + g_solution_creation
+        )
         return g
 
     def store_annotation_file(self, path: str):
         graph = self.get_annotation()
         store_path = Path(path, self.get_name() + ".nt")
-        graph.serialize(format='nt', encoding="utf-8", destination=store_path)
+        graph.serialize(format="nt", encoding="utf-8", destination=store_path)
 
     def virtuoso_upload(self):
         try:
             graph = self.get_annotation()
-            workflow_nt = graph.serialize(format='nt', encoding="utf-8")
+            workflow_nt = graph.serialize(format="nt", encoding="utf-8")
             triples = str(workflow_nt.decode("UTF-8"))
             RDF_REPOSITORY_ENDPOINT = settings.RDF_REPOSITORY_ENDPOINT
             RDF_REPOSITORY_USERNAME = settings.RDF_REPOSITORY_USERNAME
             RDF_REPOSITORY_PASSWORD = settings.RDF_REPOSITORY_PASSWORD
             RDF_REPOSITORY_DB = settings.RDF_REPOSITORY_DB
-            store = Virtuoso(endpoint=RDF_REPOSITORY_ENDPOINT, database=RDF_REPOSITORY_DB, username=RDF_REPOSITORY_USERNAME, password=RDF_REPOSITORY_PASSWORD)
+            store = Virtuoso(
+                endpoint=RDF_REPOSITORY_ENDPOINT,
+                database=RDF_REPOSITORY_DB,
+                username=RDF_REPOSITORY_USERNAME,
+                password=RDF_REPOSITORY_PASSWORD,
+            )
             query = "INSERT DATA { GRAPH <" + store.database + "> {" + triples + "} }"
 
             return store.update(query)
@@ -112,4 +132,6 @@ class EvolutionaryAlgorithm(Algorithm, ABC):
 
     @property
     def label(self) -> str:
-        return f"{self.get_name()}.{self.population_evaluation.get_problem().get_name()}"
+        return (
+            f"{self.get_name()}.{self.population_evaluation.get_problem().get_name()}"
+        )

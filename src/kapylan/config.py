@@ -1,21 +1,25 @@
 from pathlib import Path
 from kapylan.algorithm.operator.mutation import PolynomialMutation, BitFlipMutation
 from kapylan.util.comparator import DominanceComparator
-from kapylan.algorithm.component.evaluation.impl.SequentialEvaluation import SequentialEvaluation
-from kapylan.algorithm.component.termination.impl.StoppingByEvaluations import StoppingByEvaluations
+from kapylan.algorithm.component.evaluation.impl.SequentialEvaluation import (
+    SequentialEvaluation,
+)
+from kapylan.algorithm.component.termination.impl.StoppingByEvaluations import (
+    StoppingByEvaluations,
+)
 from kapylan.util.generator import RandomGenerator
 from kapylan.util.observable import DefaultObservable
 
 from pydantic import BaseSettings
 
-class _Store:
 
+class _Store:
     @property
     def default_observable(self):
         return DefaultObservable()
 
-    #@property
-    #def default_evaluator(self):
+    # @property
+    # def default_evaluator(self):
     #    return SequentialEvaluation()
 
     @property
@@ -33,8 +37,8 @@ class _Store:
     @property
     def default_mutation(self):
         return {
-            'real': PolynomialMutation(probability=0.15, distribution_index=20),
-            'binary': BitFlipMutation(0.15)
+            "real": PolynomialMutation(probability=0.15, distribution_index=20),
+            "binary": BitFlipMutation(0.15),
         }
 
 
@@ -56,5 +60,6 @@ class _Settings(BaseSettings):
             print("⚙️ Loading settings from environment")
         else:
             print(f"⚙️ Loading settings from dotenv @ {file_path.absolute()}")
+
 
 settings = _Settings()

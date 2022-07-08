@@ -2,12 +2,15 @@ import unittest
 
 from kapylan.problem.zdt import ZDT1
 
+
 class ZDT1TestCases(unittest.TestCase):
     def test_should_constructor_create_a_non_null_object(self) -> None:
         problem = ZDT1()
         self.assertIsNotNone(problem)
 
-    def test_should_constructor_create_a_valid_problem_with_default_settings(self) -> None:
+    def test_should_constructor_create_a_valid_problem_with_default_settings(
+        self,
+    ) -> None:
         problem = ZDT1()
         self.assertEqual(30, problem.number_of_variables)
         self.assertEqual(2, problem.number_of_objectives)
@@ -40,6 +43,7 @@ class ZDT1TestCases(unittest.TestCase):
     def test_should_get_name_return_the_right_name(self):
         problem = ZDT1()
         self.assertEqual("ZDT1", problem.get_name())
+
 
 if __name__ == "__main__":
     unittest.main()

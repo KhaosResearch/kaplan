@@ -9,7 +9,11 @@ from kapylan.util.evaluator import SequentialEvaluator
 
 TITAN = ontology(uri="http://www.ontologies.khaos.uma.es/titan-kaplan/")
 
-@EvaluationComponent(hasImplementation=TITAN.namespace.ImplementationSequentialEvaluation, label=rdflib.Literal('Sequential Evaluation', datatype=XSD.string))
+
+@EvaluationComponent(
+    hasImplementation=TITAN.namespace.ImplementationSequentialEvaluation,
+    label=rdflib.Literal("Sequential Evaluation", datatype=XSD.string),
+)
 class SequentialEvaluation(Evaluation):
     def __init__(self, problem: Problem):
         super(SequentialEvaluation, self).__init__()
@@ -23,4 +27,4 @@ class SequentialEvaluation(Evaluation):
         return self.problem
 
     def get_name(self):
-        return 'Sequential evaluation'
+        return "Sequential evaluation"

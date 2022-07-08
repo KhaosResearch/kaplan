@@ -5,12 +5,13 @@ from typing import Generic, TypeVar, List
 
 from kapylan.core.solution import FloatSolution, MSASolution
 
-LOGGER = logging.getLogger('jmetal')
+LOGGER = logging.getLogger("jmetal")
 
-S = TypeVar('S')
+S = TypeVar("S")
+
 
 class Problem(Generic[S], ABC):
-    """ Class representing problems. """
+    """Class representing problems."""
 
     MINIMIZE = -1
     MAXIMIZE = 1
@@ -27,17 +28,17 @@ class Problem(Generic[S], ABC):
 
     @abstractmethod
     def create_solution(self) -> S:
-        """ Creates a random_search solution to the problem.
+        """Creates a random_search solution to the problem.
 
-        :return: Solution. """
+        :return: Solution."""
         pass
 
     @abstractmethod
     def evaluate(self, solution: S) -> S:
-        """ Evaluate a solution. For any new problem inheriting from :class:`Problem`, this method should be
+        """Evaluate a solution. For any new problem inheriting from :class:`Problem`, this method should be
         replaced. Note that this framework ASSUMES minimization, thus solutions must be evaluated in consequence.
 
-        :return: Evaluated solution. """
+        :return: Evaluated solution."""
         pass
 
     @abstractmethod
@@ -46,7 +47,7 @@ class Problem(Generic[S], ABC):
 
 
 class FloatProblem(Problem[FloatSolution], ABC):
-    """ Class representing float problems. """
+    """Class representing float problems."""
 
     def __init__(self):
         super(FloatProblem, self).__init__()
@@ -58,16 +59,18 @@ class FloatProblem(Problem[FloatSolution], ABC):
             self.lower_bound,
             self.upper_bound,
             self.number_of_objectives,
-            self.number_of_constraints)
-        new_solution.variables = \
-            [random.uniform(self.lower_bound[i] * 1.0, self.upper_bound[i] * 1.0) for i in
-             range(self.number_of_variables)]
+            self.number_of_constraints,
+        )
+        new_solution.variables = [
+            random.uniform(self.lower_bound[i] * 1.0, self.upper_bound[i] * 1.0)
+            for i in range(self.number_of_variables)
+        ]
 
         return new_solution
 
 
 class MSAProblem(Problem[MSASolution]):
-    """ Class representing MSA problems """
+    """Class representing MSA problems"""
 
     __metaclass__ = ABCMeta
 
@@ -80,4 +83,4 @@ class MSAProblem(Problem[MSASolution]):
         pass
 
     def get_name(self) -> str:
-        return 'Multiple Sequence Alignment problem'
+        return "Multiple Sequence Alignment problem"

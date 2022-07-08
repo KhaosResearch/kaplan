@@ -2,16 +2,13 @@ from abc import abstractmethod, ABC
 
 
 class Observer(ABC):
-
     @abstractmethod
     def update(self, *args, **kwargs):
-        """ Update method.
-        """
+        """Update method."""
         pass
 
 
 class Observable(ABC):
-
     @abstractmethod
     def register(self, observer):
         pass

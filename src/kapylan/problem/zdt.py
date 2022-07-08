@@ -5,22 +5,21 @@ from kapylan.core.solution import FloatSolution
 
 
 class ZDT1(FloatProblem):
-    """ Problem ZDT1.
+    """Problem ZDT1.
 
     .. note:: Bi-objective unconstrained problem. The default number of variables is 30.
     .. note:: Continuous problem having a convex Pareto front
     """
 
-    def __init__(self, number_of_variables: int=30):
-        """ :param number_of_variables: Number of decision variables of the problem.
-        """
+    def __init__(self, number_of_variables: int = 30):
+        """:param number_of_variables: Number of decision variables of the problem."""
         super(ZDT1, self).__init__()
         self.number_of_variables = number_of_variables
         self.number_of_objectives = 2
         self.number_of_constraints = 0
 
         self.obj_directions = [self.MINIMIZE, self.MINIMIZE]
-        self.obj_labels = ['x', 'y']
+        self.obj_labels = ["x", "y"]
 
         self.lower_bound = self.number_of_variables * [0.0]
         self.upper_bound = self.number_of_variables * [1.0]
@@ -45,4 +44,4 @@ class ZDT1(FloatProblem):
         return 1.0 - sqrt(f / g)
 
     def get_name(self):
-        return 'ZDT1'
+        return "ZDT1"
