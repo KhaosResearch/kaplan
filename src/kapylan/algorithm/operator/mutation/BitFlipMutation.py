@@ -13,12 +13,14 @@ from kapylan.util.checking import Check
 BIGOWL = ontology(uri="http://www.ontologies.khaos.uma.es/bigowl/")
 TITAN = ontology(uri="http://www.ontologies.khaos.uma.es/titan-kaplan/")
 
-BitFlipMutationComponent = merge_component(MutationComponent, {"hasParameterDistribution": BIGOWL.namespace.hasParameter},
-                              {"hasParameterDistribution": TITAN.namespace.parameter_mutation_distribution_index})
+BitFlipMutationComponent = merge_component(
+    MutationComponent,
+    {"hasParameterDistribution": BIGOWL.namespace.hasParameter},
+    {"hasParameterDistribution": TITAN.namespace.parameter_mutation_distribution_index},
+)
 
-#@BitFlipMutationComponent(hasImplementation=TITAN.namespace.ImplementationBitFlipMutation, label=rdflib.Literal('Bit Flip Mutation', datatype=XSD.string), hasSolution=BIGOWL.namespace.BinarySolution)
+# @BitFlipMutationComponent(hasImplementation=TITAN.namespace.ImplementationBitFlipMutation, label=rdflib.Literal('Bit Flip Mutation', datatype=XSD.string), hasSolution=BIGOWL.namespace.BinarySolution)
 class BitFlipMutation(Mutation):
-
     def __init__(self, probability: float):
         super(BitFlipMutation, self).__init__(probability=probability)
 
@@ -29,9 +31,11 @@ class BitFlipMutation(Mutation):
             for j in range(len(solution.variables[i])):
                 rand = random.random()
                 if rand <= self.probability:
-                    solution.variables[i][j] = True if solution.variables[i][j] is False else False
+                    solution.variables[i][j] = (
+                        True if solution.variables[i][j] is False else False
+                    )
 
         return solution
 
     def get_name(self):
-        return 'BitFlip mutation'
+        return "BitFlip mutation"

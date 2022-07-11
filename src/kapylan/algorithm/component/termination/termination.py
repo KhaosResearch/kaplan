@@ -2,9 +2,10 @@ from abc import ABC, abstractmethod
 
 from kapylan.annotation.component_annotation import TerminationComponent
 
+
 @TerminationComponent()
 class Termination(ABC):
-    """ Class representing termination component. """
+    """Class representing termination component."""
 
     def __init__(self):
         pass

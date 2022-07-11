@@ -52,5 +52,6 @@ class SequentialEvaluatorTestCases(unittest.TestCase):
             self.assertEqual(1.2, problem_list[i].objectives[0])
             self.assertEqual(2.3, problem_list[i].objectives[1])
 
+
 if __name__ == "__main__":
     unittest.main()

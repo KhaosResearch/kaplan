@@ -1,6 +1,6 @@
 # kapylan
 
-<a href="https://github.com/KhaosResearch/kapylan"><img alt="Version: 0.5.5" src="https://img.shields.io/badge/version-1.0-success?color=0080FF&style=flat-square"></a> <a href="https://github.com/IreneSanx/kaplan"><img alt="Code style: black" src="https://img.shields.io/badge/code%20style-black-000000.svg?style=flat-square"></a>
+<a href="https://github.com/KhaosResearch/kapylan"><img alt="Version: 0.5.5" src="https://img.shields.io/badge/version-1.0-success?color=0080FF&style=flat-square"></a> <a href="https://github.com/KhaosResearch/kapylan"><img alt="Code style: black" src="https://img.shields.io/badge/code%20style-black-000000.svg?style=flat-square"></a>
 
 *`kapylan` is a component-based evolutionary algorithm optimisation framework that includes a semantic annotation methodology.*
 
@@ -14,9 +14,9 @@ pip install kapylan
 
 ### ✨ Getting started
 
-Take a look at the [component](https://github.com/IreneSanx/kaplan/tree/main/kaplan/algorithm/component) for more information on the components implemented for a multiobjective algorithm.
+Take a look at the [component](https://github.com/KhaosResearch/kapylan/tree/main/src/kapylan/algorithm/component) for more information on the components implemented for a multiobjective algorithm.
 
-To run a multiobjective evolutionary algorithm, the 6 components needed by the algorithm must be instantiated and the `EvolutionaryAlgorithm` function must be called with those objects: 
+To run a multiobjective evolutionary algorithm, the 6 components needed by the algorithm must be instantiated and the `EvolutionaryAlgorithm` function must be called with those objects:
 
 ```
 from kapylan.algorithm.EvolutionaryAlgorithm import EvolutionaryAlgorithm
@@ -86,6 +86,15 @@ In order to use the third function, `virtuoso_upload()`, it is necessary to inse
 ```
 from kapylan.util.solution import print_function_values_to_file, print_variables_to_file
 
-algorithm.store_annotation_file("../../../annotation_files")
+algorithm.store_annotation_file("annotation_files/")
 algorithm.virtuoso_upload()
+```
+
+#### Tests 
+
+To run the tests, simply install the package with the `test option`, which downloads the additional packages needed for unit testing, and run the `Makefile`.
+
+```
+pip install "kapylan[test]"
+make tests
 ```

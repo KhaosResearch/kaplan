@@ -5,7 +5,7 @@ from kapylan.annotation.component_annotation import EvaluationComponent
 
 @EvaluationComponent()
 class Evaluation(ABC):
-    """ Class representing evaluation component """
+    """Class representing evaluation component"""
 
     def __init__(self):
         pass

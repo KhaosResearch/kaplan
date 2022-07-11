@@ -1,8 +1,9 @@
 from abc import ABC, abstractmethod
 from kapylan.core.operator import Crossover, Mutation
 
+
 class Variation(ABC):
-    """ Class representing variation component. """
+    """Class representing variation component."""
 
     def __init__(self, mutation_operator: Mutation, crossover_operator: Crossover):
         pass

@@ -4,16 +4,16 @@ from typing import List, TypeVar
 from kapylan.util.constraint_handling import overall_constraint_violation_degree
 from kapylan.core.solution import Solution
 
-S = TypeVar('S')
+S = TypeVar("S")
+
 
 class Comparator(ABC):
-
     @abstractmethod
     def compare(self, solution1: S, solution2: S) -> int:
         pass
 
-class SolutionAttributeComparator(Comparator):
 
+class SolutionAttributeComparator(Comparator):
     def __init__(self, key: str, lowest_is_best: bool = True):
         self.key = key
         self.lowest_is_best = lowest_is_best
@@ -44,6 +44,7 @@ class SolutionAttributeComparator(Comparator):
     def get_name(self):
         return "Solution attribute comparator"
 
+
 class MultiComparator(Comparator):
     """
     This comparator takes a list of comparators and check all of them iteratively until a
@@ -66,7 +67,6 @@ class MultiComparator(Comparator):
 
     def get_name(self):
         return "Multi comparator"
-
 
 
 class OverallConstraintViolationComparator(Comparator):
@@ -92,9 +92,11 @@ class OverallConstraintViolationComparator(Comparator):
     def get_name(self):
         return "Overall constraint violation comparator"
 
-class DominanceComparator(Comparator):
 
-    def __init__(self, constraint_comparator: Comparator = OverallConstraintViolationComparator()):
+class DominanceComparator(Comparator):
+    def __init__(
+        self, constraint_comparator: Comparator = OverallConstraintViolationComparator()
+    ):
         self.constraint_comparator = constraint_comparator
 
     def compare(self, solution1: Solution, solution2: Solution) -> int:

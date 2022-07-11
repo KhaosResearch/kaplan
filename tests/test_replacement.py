@@ -1,6 +1,8 @@
 import unittest
 
-from kapylan.algorithm.component.replacement.impl.RankingAndDensityEstimatorReplacement import RankingAndDensityEstimatorReplacement
+from kapylan.algorithm.component.replacement.impl.RankingAndDensityEstimatorReplacement import (
+    RankingAndDensityEstimatorReplacement,
+)
 from kapylan.core.solution import Solution
 from kapylan.util.density_estimator import CrowdingDistance
 from kapylan.util.ranking import FastNonDominatedRanking

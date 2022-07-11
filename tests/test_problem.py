@@ -2,6 +2,7 @@ import unittest
 from kapylan.core.problem import FloatProblem
 from kapylan.core.solution import FloatSolution
 
+
 class DummyFloatProblem(FloatProblem):
     def __init__(self):
         super(DummyFloatProblem, self).__init__()

@@ -1,7 +1,8 @@
 from abc import ABC, abstractmethod
 
+
 class Algorithm(ABC):
-    """ Class representing evaluation component """
+    """Class representing evaluation component"""
 
     @abstractmethod
     def run(self):

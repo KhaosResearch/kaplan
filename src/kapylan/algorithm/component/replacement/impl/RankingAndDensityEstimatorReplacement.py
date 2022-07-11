@@ -1,7 +1,10 @@
 import rdflib
 from rdflib import XSD
 
-from kapylan.algorithm.component.replacement.replacement import RemovalPolicyType, Replacement
+from kapylan.algorithm.component.replacement.replacement import (
+    RemovalPolicyType,
+    Replacement,
+)
 from kapylan.annotation.component_annotation import ReplacementComponent
 from kapylan.annotation.decorator import merge_component
 from kapylan.annotation.ontology import ontology
@@ -11,19 +14,36 @@ from kapylan.util.ranking import Ranking
 BIGOWL = ontology(uri="http://www.ontologies.khaos.uma.es/bigowl/")
 TITAN = ontology(uri="http://www.ontologies.khaos.uma.es/titan-kaplan/")
 
-RankingAndDensityEstimatorReplacementComponent = merge_component(ReplacementComponent, {"hasParameterRemoval": BIGOWL.namespace.hasParameter,
-                                                                          "hasParameterComparator": BIGOWL.namespace.hasParameter,
-                                                                          "hasParameterRanking": BIGOWL.namespace.hasParameter,
-                                                                          "hasParameterDensity": BIGOWL.namespace.hasParameter},
-                                                    {"hasParameterRemoval": TITAN.namespace.parameter_removal_policy,
-                                                     "hasParameterComparator": TITAN.namespace.parameter_comparator_name,
-                                                     "hasParameterRanking": TITAN.namespace.parameter_ranking_name,
-                                                     "hasParameterDensity": TITAN.namespace.parameter_density_estimator_name})
+RankingAndDensityEstimatorReplacementComponent = merge_component(
+    ReplacementComponent,
+    {
+        "hasParameterRemoval": BIGOWL.namespace.hasParameter,
+        "hasParameterComparator": BIGOWL.namespace.hasParameter,
+        "hasParameterRanking": BIGOWL.namespace.hasParameter,
+        "hasParameterDensity": BIGOWL.namespace.hasParameter,
+    },
+    {
+        "hasParameterRemoval": TITAN.namespace.parameter_removal_policy,
+        "hasParameterComparator": TITAN.namespace.parameter_comparator_name,
+        "hasParameterRanking": TITAN.namespace.parameter_ranking_name,
+        "hasParameterDensity": TITAN.namespace.parameter_density_estimator_name,
+    },
+)
 
-@RankingAndDensityEstimatorReplacementComponent(hasImplementation=TITAN.namespace.ImplementationRankingAndDensityEstimatorReplacement, label=rdflib.Literal('Ranking and Density Estimator Replacement', datatype=XSD.string))
+
+@RankingAndDensityEstimatorReplacementComponent(
+    hasImplementation=TITAN.namespace.ImplementationRankingAndDensityEstimatorReplacement,
+    label=rdflib.Literal(
+        "Ranking and Density Estimator Replacement", datatype=XSD.string
+    ),
+)
 class RankingAndDensityEstimatorReplacement(Replacement):
-    def __init__(self, ranking: Ranking, density_estimator: DensityEstimator,
-                 removal_policy=RemovalPolicyType.ONE_SHOT):
+    def __init__(
+        self,
+        ranking: Ranking,
+        density_estimator: DensityEstimator,
+        removal_policy=RemovalPolicyType.ONE_SHOT,
+    ):
         self.ranking = ranking
         self.density_estimator = density_estimator
         self.removal_policy = removal_policy
@@ -39,7 +59,9 @@ class RankingAndDensityEstimatorReplacement(Replacement):
 
         return result_list
 
-    def sequential_truncation(self, ranking_id: int, size_of_the_result_list: int) -> list:
+    def sequential_truncation(
+        self, ranking_id: int, size_of_the_result_list: int
+    ) -> list:
         current_ranked_solutions = self.ranking.get_subfront(ranking_id)
         self.density_estimator.compute_density_estimator(current_ranked_solutions)
 
@@ -47,8 +69,12 @@ class RankingAndDensityEstimatorReplacement(Replacement):
 
         if len(current_ranked_solutions) < size_of_the_result_list:
             result_list.extend(self.ranking.get_subfront(ranking_id))
-            result_list.extend(self.sequential_truncation(ranking_id + 1, size_of_the_result_list - len(
-                current_ranked_solutions)))
+            result_list.extend(
+                self.sequential_truncation(
+                    ranking_id + 1,
+                    size_of_the_result_list - len(current_ranked_solutions),
+                )
+            )
         else:
             for solution in current_ranked_solutions:
                 result_list.append(solution)
@@ -61,7 +87,9 @@ class RankingAndDensityEstimatorReplacement(Replacement):
 
         return result_list
 
-    def one_shot_truncation(self, ranking_id: int, size_of_the_result_list: int) -> list:
+    def one_shot_truncation(
+        self, ranking_id: int, size_of_the_result_list: int
+    ) -> list:
         current_ranked_solutions = self.ranking.get_subfront(ranking_id)
         self.density_estimator.compute_density_estimator(current_ranked_solutions)
 
@@ -69,8 +97,12 @@ class RankingAndDensityEstimatorReplacement(Replacement):
 
         if len(current_ranked_solutions) < size_of_the_result_list:
             result_list.extend(self.ranking.get_subfront(ranking_id))
-            result_list.extend(self.one_shot_truncation(ranking_id + 1, size_of_the_result_list - len(
-                current_ranked_solutions)))
+            result_list.extend(
+                self.one_shot_truncation(
+                    ranking_id + 1,
+                    size_of_the_result_list - len(current_ranked_solutions),
+                )
+            )
         else:
             self.density_estimator.sort(current_ranked_solutions)
             i = 0
@@ -87,4 +119,4 @@ class RankingAndDensityEstimatorReplacement(Replacement):
         return self.density_estimator
 
     def get_name(self) -> str:
-        return 'Ranking and density estimator replacement'
+        return "Ranking and density estimator replacement"

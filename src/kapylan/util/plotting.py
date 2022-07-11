@@ -47,7 +47,14 @@ class Plot:
         points = pd.DataFrame(list(solution.objectives for solution in solutions))
         return points, points.shape[1]
 
-    def plot(self, front, label="", normalize: bool = False, filename: str = None, format: str = "png"):
+    def plot(
+        self,
+        front,
+        label="",
+        normalize: bool = False,
+        filename: str = None,
+        format: str = "png",
+    ):
         """Plot any arbitrary number of fronts in 2D, 3D or p-coords.
         :param front: Pareto front or a list of them.
         :param label: Pareto front title or a list of them.
@@ -73,7 +80,13 @@ class Plot:
         else:
             self.pcoords(front, normalize, filename, format)
 
-    def two_dim(self, fronts: List[list], labels: List[str] = None, filename: str = None, format: str = "png"):
+    def two_dim(
+        self,
+        fronts: List[list],
+        labels: List[str] = None,
+        filename: str = None,
+        format: str = "png",
+    ):
         """Plot any arbitrary number of fronts in 2D.
         :param fronts: List of fronts (containing solutions).
         :param labels: List of fronts title (if any).
@@ -91,7 +104,9 @@ class Plot:
             points, _ = self.get_points(fronts[i])
 
             ax = fig.add_subplot(n, n, i + 1)
-            points.plot(kind="scatter", x=0, y=1, ax=ax, s=10, color="#236FA4", alpha=1.0)
+            points.plot(
+                kind="scatter", x=0, y=1, ax=ax, s=10, color="#236FA4", alpha=1.0
+            )
 
             if labels:
                 ax.set_title(labels[i])
@@ -101,7 +116,9 @@ class Plot:
 
             if self.reference_point:
                 for point in self.reference_point:
-                    plt.plot([point[0]], [point[1]], marker="o", markersize=5, color="r")
+                    plt.plot(
+                        [point[0]], [point[1]], marker="o", markersize=5, color="r"
+                    )
                     plt.axvline(x=point[0], color="r", linestyle=":")
                     plt.axhline(y=point[1], color="r", linestyle=":")
 
@@ -119,7 +136,13 @@ class Plot:
 
         plt.close(fig=fig)
 
-    def three_dim(self, fronts: List[list], labels: List[str] = None, filename: str = None, format: str = "png"):
+    def three_dim(
+        self,
+        fronts: List[list],
+        labels: List[str] = None,
+        filename: str = None,
+        format: str = "png",
+    ):
         """Plot any arbitrary number of fronts in 3D.
         :param fronts: List of fronts (containing solutions).
         :param labels: List of fronts title (if any).
@@ -166,7 +189,13 @@ class Plot:
 
         plt.close(fig=fig)
 
-    def pcoords(self, fronts: List[list], normalize: bool = False, filename: str = None, format: str = "eps"):
+    def pcoords(
+        self,
+        fronts: List[list],
+        normalize: bool = False,
+        filename: str = None,
+        format: str = "eps",
+    ):
         """Plot any arbitrary number of fronts in parallel coordinates.
         :param fronts: List of fronts (containing solutions).
         :param filename: Output filename.

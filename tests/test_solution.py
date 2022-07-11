@@ -1,8 +1,15 @@
 import copy
 import unittest
 
-from kapylan.core.solution import BinarySolution, CompositeSolution, FloatSolution, IntegerSolution, Solution
+from kapylan.core.solution import (
+    BinarySolution,
+    CompositeSolution,
+    FloatSolution,
+    IntegerSolution,
+    Solution,
+)
 from kapylan.util.checking import InvalidConditionException
+
 
 class SolutionTestCase(unittest.TestCase):
     def test_should_default_constructor_create_a_valid_solution(self):
@@ -31,7 +38,9 @@ class BinarySolutionTestCase(unittest.TestCase):
         self.assertEqual([True, False], solution.variables[0])
         self.assertEqual([False], solution.variables[1])
 
-    def test_should_get_total_number_of_bits_return_zero_if_the_object_variables_are_not_initialized(self):
+    def test_should_get_total_number_of_bits_return_zero_if_the_object_variables_are_not_initialized(
+        self,
+    ):
         solution = BinarySolution(number_of_variables=2, number_of_objectives=3)
         self.assertEqual(0, solution.get_total_number_of_bits())
 
@@ -67,7 +76,9 @@ class FloatSolutionTestCase(unittest.TestCase):
         new_solution = copy.copy(solution)
 
         self.assertEqual(solution.number_of_variables, new_solution.number_of_variables)
-        self.assertEqual(solution.number_of_objectives, new_solution.number_of_objectives)
+        self.assertEqual(
+            solution.number_of_objectives, new_solution.number_of_objectives
+        )
         self.assertEqual(solution.variables, new_solution.variables)
         self.assertEqual(solution.objectives, new_solution.objectives)
         self.assertEqual(solution.lower_bound, new_solution.lower_bound)
@@ -104,7 +115,9 @@ class IntegerSolutionTestCase(unittest.TestCase):
         new_solution = copy.copy(solution)
 
         self.assertEqual(solution.number_of_variables, new_solution.number_of_variables)
-        self.assertEqual(solution.number_of_objectives, new_solution.number_of_objectives)
+        self.assertEqual(
+            solution.number_of_objectives, new_solution.number_of_objectives
+        )
         self.assertEqual(solution.variables, new_solution.variables)
         self.assertEqual(solution.objectives, new_solution.objectives)
         self.assertEqual(solution.lower_bound, new_solution.lower_bound)
@@ -116,23 +129,33 @@ class IntegerSolutionTestCase(unittest.TestCase):
 
 
 class CompositeSolutionTestCase(unittest.TestCase):
-    def test_should_constructor_create_a_valid_not_none_composite_solution_composed_of_a_double_solution(self):
+    def test_should_constructor_create_a_valid_not_none_composite_solution_composed_of_a_double_solution(
+        self,
+    ):
         composite_solution = CompositeSolution([FloatSolution([1.0], [2.0], 2)])
         self.assertIsNotNone(composite_solution)
 
-    def test_should_constructor_raise_an_exception_if_the_number_of_objectives_is_not_coherent(self):
+    def test_should_constructor_raise_an_exception_if_the_number_of_objectives_is_not_coherent(
+        self,
+    ):
         float_solution = FloatSolution([1.0], [3.0], 3)
         integer_solution = IntegerSolution([2], [4], 2)
 
         with self.assertRaises(InvalidConditionException):
             CompositeSolution([float_solution, integer_solution])
 
-    def test_should_constructor_create_a_valid_soltion_composed_of_a_float_and_an_integer_solutions(self):
+    def test_should_constructor_create_a_valid_soltion_composed_of_a_float_and_an_integer_solutions(
+        self,
+    ):
         number_of_objectives = 3
         number_of_constraints = 1
 
-        float_solution = FloatSolution([1.0], [3.0], number_of_objectives, number_of_constraints)
-        integer_solution = IntegerSolution([2], [4], number_of_objectives, number_of_constraints)
+        float_solution = FloatSolution(
+            [1.0], [3.0], number_of_objectives, number_of_constraints
+        )
+        integer_solution = IntegerSolution(
+            [2], [4], number_of_objectives, number_of_constraints
+        )
 
         solution = CompositeSolution([float_solution, integer_solution])
 
@@ -140,33 +163,59 @@ class CompositeSolutionTestCase(unittest.TestCase):
         self.assertEqual(2, solution.number_of_variables)
         self.assertEqual(number_of_objectives, solution.number_of_objectives)
         self.assertEqual(number_of_constraints, solution.number_of_constraints)
-        self.assertEqual(number_of_objectives, solution.variables[0].number_of_objectives)
-        self.assertEqual(number_of_objectives, solution.variables[1].number_of_objectives)
-        self.assertEqual(number_of_constraints, solution.variables[0].number_of_constraints)
-        self.assertEqual(number_of_constraints, solution.variables[1].number_of_constraints)
+        self.assertEqual(
+            number_of_objectives, solution.variables[0].number_of_objectives
+        )
+        self.assertEqual(
+            number_of_objectives, solution.variables[1].number_of_objectives
+        )
+        self.assertEqual(
+            number_of_constraints, solution.variables[0].number_of_constraints
+        )
+        self.assertEqual(
+            number_of_constraints, solution.variables[1].number_of_constraints
+        )
         self.assertTrue(type(solution.variables[0] is FloatSolution))
         self.assertTrue(type(solution.variables[1] is IntegerSolution))
 
     def test_should_copy_work_properly(self):
         number_of_objectives = 3
         number_of_constraints = 1
-        float_solution = FloatSolution([1.0], [3.0], number_of_objectives, number_of_constraints)
-        integer_solution = IntegerSolution([2], [4], number_of_objectives, number_of_constraints)
+        float_solution = FloatSolution(
+            [1.0], [3.0], number_of_objectives, number_of_constraints
+        )
+        integer_solution = IntegerSolution(
+            [2], [4], number_of_objectives, number_of_constraints
+        )
 
         solution = CompositeSolution([float_solution, integer_solution])
         new_solution = copy.deepcopy(solution)
 
         self.assertEqual(solution.number_of_variables, new_solution.number_of_variables)
-        self.assertEqual(solution.number_of_objectives, new_solution.number_of_objectives)
-        self.assertEqual(solution.number_of_constraints, new_solution.number_of_constraints)
+        self.assertEqual(
+            solution.number_of_objectives, new_solution.number_of_objectives
+        )
+        self.assertEqual(
+            solution.number_of_constraints, new_solution.number_of_constraints
+        )
 
-        self.assertEqual(solution.variables[0].number_of_variables, new_solution.variables[0].number_of_variables)
-        self.assertEqual(solution.variables[1].number_of_variables, new_solution.variables[1].number_of_variables)
+        self.assertEqual(
+            solution.variables[0].number_of_variables,
+            new_solution.variables[0].number_of_variables,
+        )
+        self.assertEqual(
+            solution.variables[1].number_of_variables,
+            new_solution.variables[1].number_of_variables,
+        )
         self.assertEqual(solution.variables[0], new_solution.variables[0])
         self.assertEqual(solution.variables[1], new_solution.variables[1])
 
-        self.assertEqual(solution.variables[0].variables, new_solution.variables[0].variables)
-        self.assertEqual(solution.variables[1].variables, new_solution.variables[1].variables)
+        self.assertEqual(
+            solution.variables[0].variables, new_solution.variables[0].variables
+        )
+        self.assertEqual(
+            solution.variables[1].variables, new_solution.variables[1].variables
+        )
 
 
 if __name__ == "__main__":

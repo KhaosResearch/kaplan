@@ -26,19 +26,27 @@ class DummyCrossover(Crossover):
 
 
 class OperatorTestCase(unittest.TestCase):
-    def test_should_mutation_constructor_raises_an_exception_is_probability_is_negative(self) -> None:
+    def test_should_mutation_constructor_raises_an_exception_is_probability_is_negative(
+        self,
+    ) -> None:
         with self.assertRaises(Exception):
             DummyMutation(-1)
 
-    def test_should_mutation_constructor_raises_an_exception_is_probability_is_higher_than_one(self) -> None:
+    def test_should_mutation_constructor_raises_an_exception_is_probability_is_higher_than_one(
+        self,
+    ) -> None:
         with self.assertRaises(Exception):
             DummyMutation(1.1)
 
-    def test_should_crossover_constructor_raises_an_exception_is_probability_is_negative(self) -> None:
+    def test_should_crossover_constructor_raises_an_exception_is_probability_is_negative(
+        self,
+    ) -> None:
         with self.assertRaises(Exception):
             DummyCrossover(-1)
 
-    def test_should_crossover_constructor_raises_an_exception_is_probability_is_higher_than_one(self) -> None:
+    def test_should_crossover_constructor_raises_an_exception_is_probability_is_higher_than_one(
+        self,
+    ) -> None:
         with self.assertRaises(Exception):
             DummyMutation(1.1)
 

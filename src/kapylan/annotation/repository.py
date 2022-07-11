@@ -5,8 +5,11 @@ from typing import Dict
 import httpx
 from httpx import Response
 
+
 class RDFRepository(ABC):
-    def __init__(self, endpoint: str, database: str, username: str = None, password: str = None):
+    def __init__(
+        self, endpoint: str, database: str, username: str = None, password: str = None
+    ):
         self.endpoint = endpoint
         self.database = database
         self.username = username
@@ -34,7 +37,9 @@ class Virtuoso(RDFRepository):
 
     COMMENTS_PATTERN = re.compile(r"(^|\n)\s*#.*?\n")
 
-    def __init__(self, endpoint: str, database: str, username: str = None, password: str = None):
+    def __init__(
+        self, endpoint: str, database: str, username: str = None, password: str = None
+    ):
         super().__init__(endpoint, database, username, password)
 
         self.parameters: Dict[str, str] = {}

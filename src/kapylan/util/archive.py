@@ -1,12 +1,10 @@
 from abc import ABC, abstractmethod
 from typing import Generic, List, TypeVar
 
-from kapylan.util.comparator import (
-    Comparator,
-    DominanceComparator
-)
+from kapylan.util.comparator import Comparator, DominanceComparator
 
 S = TypeVar("S")
+
 
 class Archive(Generic[S], ABC):
     def __init__(self):

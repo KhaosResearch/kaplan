@@ -6,8 +6,8 @@ from rdflib import Namespace
 
 class ontology:
     def __init__(
-            self,
-            uri: str,
+        self,
+        uri: str,
     ):
         self.uri = rdflib.URIRef(uri)
         self.namespace = Namespace(uri)

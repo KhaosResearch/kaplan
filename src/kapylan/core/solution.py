@@ -3,10 +3,16 @@ from typing import List
 
 from kapylan.util.checking import Check
 
-class Solution(ABC):
-    """ Class representing solutions """
 
-    def __init__(self, number_of_variables: int, number_of_objectives: int, number_of_constraints: int = 0):
+class Solution(ABC):
+    """Class representing solutions"""
+
+    def __init__(
+        self,
+        number_of_variables: int,
+        number_of_objectives: int,
+        number_of_constraints: int = 0,
+    ):
         self.number_of_variables = number_of_variables
         self.number_of_objectives = number_of_objectives
         self.number_of_constraints = number_of_constraints
@@ -21,20 +27,28 @@ class Solution(ABC):
         return False
 
     def __str__(self) -> str:
-        return 'Solution(variables={},objectives={},constraints={})'.format(self.variables, self.objectives,
-                                                                            self.constraints)
+        return "Solution(variables={},objectives={},constraints={})".format(
+            self.variables, self.objectives, self.constraints
+        )
 
 
 class BinarySolution(Solution):
-    """ Class representing float solutions """
+    """Class representing float solutions"""
 
-    def __init__(self, number_of_variables: int, number_of_objectives: int, number_of_constraints: int = 0):
-        super(BinarySolution, self).__init__(number_of_variables, number_of_objectives, number_of_constraints)
+    def __init__(
+        self,
+        number_of_variables: int,
+        number_of_objectives: int,
+        number_of_constraints: int = 0,
+    ):
+        super(BinarySolution, self).__init__(
+            number_of_variables, number_of_objectives, number_of_constraints
+        )
 
     def __copy__(self):
         new_solution = BinarySolution(
-            self.number_of_variables,
-            self.number_of_objectives)
+            self.number_of_variables, self.number_of_objectives
+        )
         new_solution.objectives = self.objectives[:]
         new_solution.variables = self.variables[:]
 
@@ -52,16 +66,23 @@ class BinarySolution(Solution):
     def get_binary_string(self) -> str:
         string = ""
         for bit in self.variables[0]:
-            string += '1' if bit else '0'
+            string += "1" if bit else "0"
         return string
 
 
 class FloatSolution(Solution):
-    """ Class representing float solutions """
+    """Class representing float solutions"""
 
-    def __init__(self, lower_bound: List[float], upper_bound: List[float], number_of_objectives: int,
-                 number_of_constraints: int = 0):
-        super(FloatSolution, self).__init__(len(lower_bound), number_of_objectives, number_of_constraints)
+    def __init__(
+        self,
+        lower_bound: List[float],
+        upper_bound: List[float],
+        number_of_objectives: int,
+        number_of_constraints: int = 0,
+    ):
+        super(FloatSolution, self).__init__(
+            len(lower_bound), number_of_objectives, number_of_constraints
+        )
         self.lower_bound = lower_bound
         self.upper_bound = upper_bound
 
@@ -70,7 +91,8 @@ class FloatSolution(Solution):
             self.lower_bound,
             self.upper_bound,
             self.number_of_objectives,
-            self.number_of_constraints)
+            self.number_of_constraints,
+        )
         new_solution.objectives = self.objectives[:]
         new_solution.variables = self.variables[:]
         new_solution.constraints = self.constraints[:]
@@ -81,11 +103,18 @@ class FloatSolution(Solution):
 
 
 class IntegerSolution(Solution):
-    """ Class representing integer solutions """
+    """Class representing integer solutions"""
 
-    def __init__(self, lower_bound: List[int], upper_bound: List[int], number_of_objectives: int,
-                 number_of_constraints: int = 0):
-        super(IntegerSolution, self).__init__(len(lower_bound), number_of_objectives, number_of_constraints)
+    def __init__(
+        self,
+        lower_bound: List[int],
+        upper_bound: List[int],
+        number_of_objectives: int,
+        number_of_constraints: int = 0,
+    ):
+        super(IntegerSolution, self).__init__(
+            len(lower_bound), number_of_objectives, number_of_constraints
+        )
         self.lower_bound = lower_bound
         self.upper_bound = upper_bound
 
@@ -94,7 +123,8 @@ class IntegerSolution(Solution):
             self.lower_bound,
             self.upper_bound,
             self.number_of_objectives,
-            self.number_of_constraints)
+            self.number_of_constraints,
+        )
         new_solution.objectives = self.objectives[:]
         new_solution.variables = self.variables[:]
         new_solution.constraints = self.constraints[:]
@@ -105,7 +135,7 @@ class IntegerSolution(Solution):
 
 
 class CompositeSolution(Solution):
-    """ Class representing solutions composed of a list of solutions. The idea is that each decision  variable can
+    """Class representing solutions composed of a list of solutions. The idea is that each decision  variable can
     be a solution of any type, so we can create mixed solutions (e.g., solutions combining any of the existing
     encodings). The adopted approach has the advantage of easing the reuse of existing variation operators, but all the
     solutions in the list will need to have the same function and constraint violation values.
@@ -114,18 +144,25 @@ class CompositeSolution(Solution):
     """
 
     def __init__(self, solutions: List[Solution]):
-        super(CompositeSolution, self).__init__(len(solutions), solutions[0].number_of_objectives,
-                                                solutions[0].number_of_constraints)
+        super(CompositeSolution, self).__init__(
+            len(solutions),
+            solutions[0].number_of_objectives,
+            solutions[0].number_of_constraints,
+        )
         Check.is_not_none(solutions)
         Check.collection_is_not_empty(solutions)
 
         for solution in solutions:
-            Check.that(solution.number_of_objectives == solutions[0].number_of_objectives,
-                       "The solutions in the list must have the same number of objectives: " + str(
-                           solutions[0].number_of_objectives))
-            Check.that(solution.number_of_constraints == solutions[0].number_of_constraints,
-                       "The solutions in the list must have the same number of constraints: " + str(
-                           solutions[0].number_of_constraints))
+            Check.that(
+                solution.number_of_objectives == solutions[0].number_of_objectives,
+                "The solutions in the list must have the same number of objectives: "
+                + str(solutions[0].number_of_objectives),
+            )
+            Check.that(
+                solution.number_of_constraints == solutions[0].number_of_constraints,
+                "The solutions in the list must have the same number of constraints: "
+                + str(solutions[0].number_of_constraints),
+            )
 
         self.variables = solutions
 
@@ -140,15 +177,22 @@ class CompositeSolution(Solution):
 
 
 class PermutationSolution(Solution):
-    """ Class representing permutation solutions """
+    """Class representing permutation solutions"""
 
-    def __init__(self, number_of_variables: int, number_of_objectives: int, number_of_constraints: int = 0):
-        super(PermutationSolution, self).__init__(number_of_variables, number_of_objectives, number_of_constraints)
+    def __init__(
+        self,
+        number_of_variables: int,
+        number_of_objectives: int,
+        number_of_constraints: int = 0,
+    ):
+        super(PermutationSolution, self).__init__(
+            number_of_variables, number_of_objectives, number_of_constraints
+        )
 
     def __copy__(self):
         new_solution = PermutationSolution(
-            self.number_of_variables,
-            self.number_of_objectives)
+            self.number_of_variables, self.number_of_objectives
+        )
         new_solution.objectives = self.objectives[:]
         new_solution.variables = self.variables[:]
 
@@ -156,16 +200,19 @@ class PermutationSolution(Solution):
 
         return new_solution
 
+
 class MSASolution(Solution):
     """
     Class representing MSA solutions.
     """
 
-    GAP_IDENTIFIER = '-'
+    GAP_IDENTIFIER = "-"
 
     def __init__(self, problem, msa: list) -> None:
-        super(MSASolution, self).__init__(number_of_variables=problem.number_of_variables,
-                                          number_of_objectives=problem.number_of_objectives)
+        super(MSASolution, self).__init__(
+            number_of_variables=problem.number_of_variables,
+            number_of_objectives=problem.number_of_objectives,
+        )
 
         self.sequences_names = problem.identifiers
         self.gaps_groups = [[] for _ in range(self.number_of_variables)]
@@ -187,7 +234,9 @@ class MSASolution(Solution):
         aligned_sequences = []
 
         for i in range(self.number_of_variables):
-            aligned_sequences.append(self.__decode(self.variables[i], self.gaps_groups[i]))
+            aligned_sequences.append(
+                self.__decode(self.variables[i], self.gaps_groups[i])
+            )
 
         return aligned_sequences
 
@@ -206,9 +255,9 @@ class MSASolution(Solution):
         # insert gap groups
         for i in range(0, len(gaps_group) - 1, 2):
             for j in range(gaps_group[i], gaps_group[i + 1] + 1):
-                aligned_sequence.insert(j, '-')
+                aligned_sequence.insert(j, "-")
 
-        return ''.join(aligned_sequence)
+        return "".join(aligned_sequence)
 
     def merge_gaps_groups(self) -> None:
         for i in range(self.number_of_variables):
@@ -250,7 +299,10 @@ class MSASolution(Solution):
                     new_gaps_group[j] += 1
                     new_gaps_group[j + 1] += 1
 
-                if new_gaps_group[j] == gap_position or new_gaps_group[j + 1] == gap_position:
+                if (
+                    new_gaps_group[j] == gap_position
+                    or new_gaps_group[j + 1] == gap_position
+                ):
                     new_gaps_group[j + 1] += 1
                     gap_added = True
                 elif new_gaps_group[j] < gap_position < new_gaps_group[j + 1]:
@@ -307,15 +359,24 @@ class MSASolution(Solution):
                         gaps_group.insert(j + 1, column + 1)
                         gaps_group.insert(j + 1, column - 1)
 
-    def remove_gap_group_from_sequence_at_column(self, seq_index: int, column_index: int) -> None:
+    def remove_gap_group_from_sequence_at_column(
+        self, seq_index: int, column_index: int
+    ) -> None:
         if not self.is_gap_char_at_sequence(seq_index, column_index):
-            raise Exception("No gap group in position {0} at sequence {1}".format(column_index, seq_index))
+            raise Exception(
+                "No gap group in position {0} at sequence {1}".format(
+                    column_index, seq_index
+                )
+            )
         else:
             gaps_group = self.gaps_groups[seq_index]
 
             for j in range(0, len(gaps_group) - 1, 2):
-                if gaps_group[j] == column_index or gaps_group[j + 1] == column_index \
-                        or gaps_group[j] < column_index < gaps_group[j + 1]:
+                if (
+                    gaps_group[j] == column_index
+                    or gaps_group[j + 1] == column_index
+                    or gaps_group[j] < column_index < gaps_group[j + 1]
+                ):
                     del gaps_group[j]
                     del gaps_group[j]
 
@@ -328,17 +389,21 @@ class MSASolution(Solution):
             for j in range(0, len(new_gaps_group) - 1, 2):
                 if new_gaps_group[j] == position or new_gaps_group[j + 1] == position:
                     if new_gaps_group[j] == new_gaps_group[j + 1]:
-                        new_gaps_group[j + 2:] = [x - 1 for x in new_gaps_group[j + 2:]]
+                        new_gaps_group[j + 2 :] = [
+                            x - 1 for x in new_gaps_group[j + 2 :]
+                        ]
                         del new_gaps_group[j]
                         del new_gaps_group[j]
                         break
                     else:
                         new_gaps_group[j + 1] -= 1
-                        new_gaps_group[j + 2:] = [x - 1 for x in new_gaps_group[j + 2:]]
+                        new_gaps_group[j + 2 :] = [
+                            x - 1 for x in new_gaps_group[j + 2 :]
+                        ]
                         break
                 elif new_gaps_group[j] < position < new_gaps_group[j + 1]:
                     new_gaps_group[j + 1] -= 1
-                    new_gaps_group[j + 2:] = [x - 1 for x in new_gaps_group[j + 2:]]
+                    new_gaps_group[j + 2 :] = [x - 1 for x in new_gaps_group[j + 2 :]]
                     break
 
         self.gaps_groups[seq_index] = new_gaps_group
@@ -364,12 +429,18 @@ class MSASolution(Solution):
         return True
 
     def is_gap_char_at_sequence(self, seq_index: int, index: int) -> bool:
-        assert seq_index <= self.number_of_variables - 1, "Sequence doesn't exist on this alignment"
+        assert (
+            seq_index <= self.number_of_variables - 1
+        ), "Sequence doesn't exist on this alignment"
 
         if index > self.get_length_of_sequence(seq_index) or index < 0:
             raise Exception(
                 "Index out of sequence: index {0}, alignment length: {1}, sequence length: {2}".format(
-                    index, self.get_length_of_alignment(), self.get_length_of_sequence(seq_index)))
+                    index,
+                    self.get_length_of_alignment(),
+                    self.get_length_of_sequence(seq_index),
+                )
+            )
 
         gaps_group = self.gaps_groups[seq_index]
 
@@ -389,8 +460,12 @@ class MSASolution(Solution):
                 gaps_on_the_left.append(gaps_group[j + 1])
 
         if len(gaps_on_the_left) > 0:
-            length_of_gaps = \
-                sum([gaps_on_the_left[j + 1] - gaps_on_the_left[j] + 1 for j in range(0, len(gaps_on_the_left) - 1, 2)])
+            length_of_gaps = sum(
+                [
+                    gaps_on_the_left[j + 1] - gaps_on_the_left[j] + 1
+                    for j in range(0, len(gaps_on_the_left) - 1, 2)
+                ]
+            )
 
             position -= length_of_gaps
 
@@ -412,7 +487,9 @@ class MSASolution(Solution):
 
         return position
 
-    def get_original_char_position_in_aligned_sequence(self, seq_index: int, position: int):
+    def get_original_char_position_in_aligned_sequence(
+        self, seq_index: int, position: int
+    ):
         symbol_position = 0
         found_symbols = 0
 
@@ -451,7 +528,7 @@ class MSASolution(Solution):
         start = 0
 
         for i in range(len(sequence)):
-            if sequence[i] == '-':
+            if sequence[i] == "-":
                 if not gap_open:
                     gap_open = True
                     start = i
@@ -507,9 +584,11 @@ class MSASolution(Solution):
         return len(self.variables[seq_index]) + self.get_length_of_gaps(seq_index)
 
     def is_valid_msa(self) -> bool:
-        """ Check if all sequences have the same length """
-        if not all(self.get_length_of_sequence(seq_index) == self.get_length_of_sequence(0)
-                   for seq_index in range(1, self.number_of_variables)):
+        """Check if all sequences have the same length"""
+        if not all(
+            self.get_length_of_sequence(seq_index) == self.get_length_of_sequence(0)
+            for seq_index in range(1, self.number_of_variables)
+        ):
             return False
         return True
 
@@ -518,9 +597,9 @@ class MSASolution(Solution):
         n = 200
 
         for index, seq in enumerate(self.sequences_names):
-            fasta += '>' + seq + '\n'
+            fasta += ">" + seq + "\n"
             sequence = self.decode_sequence_at_index(index)
-            sequence = [sequence[i:i + n] for i in range(0, len(sequence), n)]
+            sequence = [sequence[i : i + n] for i in range(0, len(sequence), n)]
 
             for wrap in sequence:
                 fasta += wrap + "\n"

@@ -1,4 +1,3 @@
-
 from abc import ABC, abstractmethod
 from typing import List
 
@@ -26,7 +25,6 @@ class QualityIndicator(ABC):
     @abstractmethod
     def get_short_name(self) -> str:
         pass
-
 
 
 class HyperVolume(QualityIndicator):
@@ -66,7 +64,10 @@ class HyperVolume(QualityIndicator):
             # this way the reference point doesn't have to be explicitly used
             # in the HV computation
             for j in range(len(relevant_points)):
-                relevant_points[j] = [relevant_points[j][i] - reference_point[i] for i in range(dimensions)]
+                relevant_points[j] = [
+                    relevant_points[j][i] - reference_point[i]
+                    for i in range(dimensions)
+                ]
         self._pre_process(relevant_points)
         bounds = [-1.0e308] * dimensions
 
@@ -111,7 +112,8 @@ class HyperVolume(QualityIndicator):
                 q = q.prev[dim_index]
             q = p.prev[dim_index]
             while length > 1 and (
-                q.cargo[dim_index] > bounds[dim_index] or q.prev[dim_index].cargo[dim_index] >= bounds[dim_index]
+                q.cargo[dim_index] > bounds[dim_index]
+                or q.prev[dim_index].cargo[dim_index] >= bounds[dim_index]
             ):
                 p = q
                 remove(p, dim_index, bounds)
@@ -121,12 +123,14 @@ class HyperVolume(QualityIndicator):
             q_cargo = q.cargo
             q_prev_dim_index = q.prev[dim_index]
             if length > 1:
-                hvol = q_prev_dim_index.volume[dim_index] + q_prev_dim_index.area[dim_index] * (
-                    q_cargo[dim_index] - q_prev_dim_index.cargo[dim_index]
-                )
+                hvol = q_prev_dim_index.volume[dim_index] + q_prev_dim_index.area[
+                    dim_index
+                ] * (q_cargo[dim_index] - q_prev_dim_index.cargo[dim_index])
             else:
                 q_area[0] = 1
-                q_area[1 : dim_index + 1] = [q_area[i] * -q_cargo[i] for i in range(dim_index)]
+                q_area[1 : dim_index + 1] = [
+                    q_area[i] * -q_cargo[i] for i in range(dim_index)
+                ]
             q.volume[dim_index] = hvol
             if q.ignore >= dim_index:
                 q_area[dim_index] = q_prev_dim_index.area[dim_index]
@@ -176,7 +180,6 @@ class HyperVolume(QualityIndicator):
 
     def get_name(self) -> str:
         return "Hypervolume (Fonseca et al. implementation)"
-
 
 
 class MultiList:
