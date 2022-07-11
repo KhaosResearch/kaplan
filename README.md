@@ -96,4 +96,5 @@ To run the tests, simply install the package with the `test option`, which downl
 
 ```
 pip install "kapylan[test]"
+make tests
 ```
